@@ -4,7 +4,7 @@
 
 Click the **Continue** button to move to the next step.
 
-### Setup
+## Setup
 
 **Tip**: Click the copy button on the side of the code box and paste the command in the Cloud Shell terminal to run it.
 
@@ -19,7 +19,7 @@ If not execute the terraform install script
 ```
 Click the **Continue** button to move to the next step.
 
-### Create Compute Instance
+## Create Compute Instance
 
 ```bash
 export PROJECT_NAME=devops-sony
@@ -86,6 +86,6 @@ yes
 
 Click the **Continue** button to move to the next step.
 
-### Congrats!
+## Congrats!
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
