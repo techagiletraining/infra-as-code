@@ -22,7 +22,7 @@ Click the **Continue** button to move to the next step.
 ## Create Compute Instance
 
 ```bash
-export PROJECT_NAME=devops-sony
+export PROJECT_NAME=devops-walkthrough
 ```
 
 Create the `compute.tf` file:
