@@ -22,13 +22,19 @@ Click the **Continue** button to move to the next step.
 ## Create Compute Instance
 
 ```bash
-export PROJECT_NAME=devops-walkthrough
+export PROJECT_NAME=devops-live
+```
+
+```bash
+export TF_VAR_project_name=devops-live
 ```
 
 Create the `compute.tf` file:
 ```
+variable "project_name" {}
+
 resource "google_compute_instance" "terraform" {
- project = "${PROJECT_NAME}"
+ project = "${var.project_name}"
  zone = "us-central1-a"
  name = "tf-compute-1"
  machine_type = "f1-micro"
@@ -45,7 +51,7 @@ resource "google_compute_instance" "terraform" {
 }
 
 output "instance_id" {
- value = "${google_compute_instance.default.self_link}"
+ value = "${google_compute_instance.terraform.self_link}"
 }
 ```
 
