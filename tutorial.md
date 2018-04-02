@@ -32,11 +32,10 @@ export TF_VAR_project_name=devops-live
 Create the `compute.tf` file:
 ```
 variable "project_name" {}
-
 resource "google_compute_instance" "terraform" {
  project = "${var.project_name}"
  zone = "us-central1-a"
- name = "tf-compute-1"
+ name = "tf-compute-${random_id.id.hex}"
  machine_type = "f1-micro"
  boot_disk {
    initialize_params {
@@ -48,6 +47,10 @@ resource "google_compute_instance" "terraform" {
    access_config {
    }
  }
+}
+
+resource "random_id" "id" {
+ byte_length = 6
 }
 
 output "instance_id" {
