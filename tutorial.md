@@ -8,6 +8,11 @@ Click the **Continue** button to move to the next step.
 
 **Tip**: Click the copy button on the side of the code box and paste the command in the Cloud Shell terminal to run it.
 
+Set Google Cloud Project:
+```bash
+gcloud config set project devops-live
+```
+
 Check if terraform is installed:
 ```bash
 terraform -v
@@ -29,7 +34,7 @@ export PROJECT_NAME=devops-live
 export TF_VAR_project_name=devops-live
 ```
 
-Create the `compute.tf` file:
+Create the `compute.tf` file in the root of the project:
 ```
 variable "project_name" {}
 resource "google_compute_instance" "terraform" {
@@ -67,6 +72,7 @@ Preview the changes:
 ```bash
 terraform plan
 ```
+Take note of the changes that Terraform is expecting to apply.
 
 Apply the changes:
 ```bash
@@ -82,6 +88,8 @@ Confirm the instance is up and running:
 ```bash
 gcloud compute instances list
 ```
+
+Open a different tab and navigate to the [Google Cloud Console](https://console.cloud.google.com/) and view the newly created Compute Instance.
 
 Clean up:
 ```bash
@@ -103,6 +111,7 @@ Let's do something a bit more interesting...
 
 Click the **Continue** button to move to the next step.
 
+## Jenkins via Helm
 In this section of the walkthrough we will setup a Kubernetes cluster using Terraform and install a Jenkins master worker setup using Helm.
 
 Click the **Continue** button to move to the next step.
@@ -193,6 +202,8 @@ Apply the changes:
 terraform apply
 ```
 
+**Note** it may take a few minutes for the cluster to be available.
+
 Enter 'yes' to accept the changes:
 ```bash
 yes
@@ -203,7 +214,9 @@ Confirm the cluster is up and running:
 gcloud container clusters list
 ```
 
-Set the kubectl context to the cluster:
+Take note of the `NAME` and the `LOCATION` outputs, these will be used in the next step as the cluster_name and the zone, respectively.
+
+Set the kubectl context to the cluster, this tells Kubernetes what cluster that you are interacting with:
 ```bash
 gcloud container clusters get-credentials <cluster_name> --zone=<cluster_zone>
 ```
@@ -212,12 +225,12 @@ Example:
 gcloud container clusters get-credentials cicd-d44bfe8b --zone=us-west1-a
 ```
 
-Browse the Google Cloud Console in the browser and take note of the infrastructure that was created by Terraform.
+Open a different tab and navigate to the [Google Cloud Console](https://console.cloud.google.com/) and view the newly created infrastructure.
 
 Click the **Continue** button to move to the next step.
 
 ## Jenkins via helm
-This Jenkins install is based on this [Google Cloud Tutorial](This is designed to run on Google's managed Kubernetes environment, GKE / k8s and is based on this google cloud solution.) but relies on [helm](https://github.com/kubernetes/helm) for the install. Helm provides a lot of default values and configuration, most of which can be overridden. Helm is a tool that streamlines installing and managing Kubernetes applications. Think of it like apt/yum/homebrew for Kubernetes.
+This Jenkins install is based on this [Google Cloud Tutorial](https://cloud.google.com/solutions/jenkins-on-kubernetes-engine). This is designed to run on Google's managed Kubernetes environment, GKE / k8s and relies on [helm](https://github.com/kubernetes/helm) for the install. Helm is a tool that streamlines installing and managing Kubernetes applications. Think of it like apt/yum/homebrew for Kubernetes.
 
 Initialize helm
 ```bash
@@ -237,13 +250,11 @@ Confirm the deployment installed:
 kubectl get deployments
 ```
 
+The deployment should be up starting up the Jenkins container and may not be available immediately.
+
 Navigate the Google Cloud Console to the Kubernetes Engine panel, under Workloads you should see your Jenkins Deployment running.
 
-screenshot
-
 Now move to the Discovery & load balancing section, here you will see services creating during the helm install.  Under the endpoint column for the Jenkins master, you will notice an IP has been created with port 8080 exposed.  Navigate to the IP in the browser.
-
-screenshot
 
 You should now be at the Jenkins login page and can can access by using the user `admin` and the `Master.AdminPassword` you provided during setup.
 
@@ -258,6 +269,8 @@ Enter 'yes' to accept the destroy:
 ```bash
 yes
 ```
+
+Navigate the Google Cloud Console again and notice that all of the infrastructure and software has been destroyed.
 
 Click the **Continue** button to move to the next step.
 
